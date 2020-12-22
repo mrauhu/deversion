@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "deversion",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Github Action that removes `version` from `package-lock.json`. Use it with `actions/cache` for Node.js repos.",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,15 +15,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/mrauhu/deversion.git"
   },
   "keywords": [
-    "actions",
-    "node",
-    "setup"
+    "cache",
+    "github",
+    "action",
+    "package-lock",
+    "package-lock.json",
+    "remove",
+    "version"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Sergey N <mrauhu@yandex.ru> (https://mrauhu.ru/)",
+  "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.2.6"
   },
