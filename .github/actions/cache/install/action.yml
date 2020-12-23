@@ -4,10 +4,10 @@ runs:
   steps:
     # NPM install
     - uses: mrauhu/deversion@master
-    - uses: actions/cache@v2
+    - uses: actions/checkout@v2
       id: node_modules-cache
       with:
         path: node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
-    - if: steps.node_modules-cache.outputs.cache-hit != 'true'
+    - if: steps.node_modules-cache.outputs.checkout-hit != 'true'
       run: npm ci

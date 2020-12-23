@@ -12,18 +12,17 @@ jobs:
   checkout:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./github/actions/cache/checkout.yml
+      - uses: ./github/actions/cache/checkout
   install:
     runs-on: ubuntu-latest
     needs: checkout
     steps:
-      - uses: ./github/actions/cache.yml
+      - uses: ./github/actions/cache
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     needs: install
     steps:
-      - uses: ./github/actions/cache.yml
+      - uses: ./github/actions/cache
       - run: npm run build
       - run: npm run package
       - run: npm run lint
@@ -31,12 +30,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: install
     steps:
-      - uses: ./github/actions/cache.yml
+      - uses: ./github/actions/cache
       - run: npm test
 
   test-clean: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     needs: checkout
     steps:
-      - uses: ./github/actions/cache/checkout.yml
+      - uses: ./github/actions/cache/checkout
       - uses: ./
