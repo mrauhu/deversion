@@ -1,28 +1,37 @@
-import {wait} from '../src/wait'
+import {promises as fs} from 'fs'
 import * as process from 'process'
 import * as cp from 'child_process'
 import * as path from 'path'
+import {promisify} from 'util'
+import {EXPECTED_PACKAGE_LOCK, ORIGINAL_PACKAGE_LOCK} from './index'
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
-})
+const execFile = promisify(cp.execFile)
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
-})
+const FILENAME = './test.json'
 
 // shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const np = process.execPath
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecFileSyncOptions = {
-    env: process.env
-  }
-  console.log(cp.execFileSync(np, [ip], options).toString())
+describe('deversion Github Action', () => {
+  beforeAll(async () => {
+    const str = JSON.stringify(ORIGINAL_PACKAGE_LOCK, null, '  ')
+    await fs.writeFile(FILENAME, str)
+  })
+
+  afterAll(async () => {
+    await fs.rm(FILENAME)
+  })
+
+  it('should run with env variable', async () => {
+    process.env['INPUT_FILENAME'] = FILENAME
+
+    const node = process.execPath
+    const argument = path.join(__dirname, '..', 'lib', 'main.js')
+    const options: cp.ExecFileSyncOptions = {
+      env: process.env
+    }
+    await execFile(node, [argument], options)
+
+    const content = await fs.readFile(FILENAME, 'utf-8')
+    const obj = JSON.parse(content)
+    expect(obj).toEqual(EXPECTED_PACKAGE_LOCK)
+  })
 })
