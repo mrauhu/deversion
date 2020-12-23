@@ -1,6 +1,6 @@
 {
   "name": "deversion",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Makes it possible to use NPM caching when versioning. Github Action that removes `version` from `package-lock.json`. Use it before the `actions/cache` step.",
   "main": "lib/main.js",
