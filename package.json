@@ -13,7 +13,8 @@
     "test": "jest --coverage",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test",
     "preversion": "npm test",
-    "version": "npm run build && npm run package && git add -A dist"
+    "version": "npm run build && npm run package && git add -A dist",
+    "postversion": "git tag -f v1 && git push origin v1 --force"
   },
   "repository": {
     "type": "git",
