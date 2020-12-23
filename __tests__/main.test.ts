@@ -23,12 +23,21 @@ describe('deversion Github Action', () => {
   it('should run with env variable', async () => {
     process.env['INPUT_FILENAME'] = FILENAME
 
+    // Run `src/main.ts` directly using `ts-node`
     const node = process.execPath
-    const argument = path.join(__dirname, '..', 'lib', 'main.js')
+    const main_ts = path.join(__dirname, '..', 'src', 'main.ts')
+    const tsNode = path.join(
+      __dirname,
+      '..',
+      'node_modules',
+      'ts-node',
+      'dist',
+      'bin.js'
+    )
     const options: cp.ExecFileSyncOptions = {
       env: process.env
     }
-    await execFile(node, [argument], options)
+    await execFile(node, [tsNode, main_ts], options)
 
     const content = await fs.readFile(FILENAME, 'utf-8')
     const obj = JSON.parse(content)
