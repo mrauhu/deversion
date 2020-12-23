@@ -3,33 +3,47 @@
   <a href="https://github.com/mrauhu/deversion/actions"><img alt="typescript-action status" src="https://github.com/mrauhu/deversion/workflows/build-test/badge.svg"></a>
 </p>
 
-# Deversion
+# mrauhu/deversion
 
-## Effective caching of `node_modules`
+> Github Action that removes `version` from `package-lock.json`.
 
-Makes it possible to use NPM caching when versioning. Removes `version` from `package-lock.json`.
+Superpowers the `node_modules` cache step. Lets you skip the installation step even if the version of your Node.js package was bumped via `npm version`.
 
-## How to use in your workflow
+## Usage
 
-Add `mrauhu/deversion` before `actions/cache` and setup cache `id` and `key`.
+Add `mrauhu/deversion` before `actions/cache`, setup cache `id` and check cache hit after:
+
+```yaml
+- uses: mrauhu/deversion@master
+- uses: actions/cache@v2
+  id: cache
+  with:
+    path: node_modules
+    key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+- if: steps.cache.outputs.cache-hit != 'true'
+  run: npm ci
+```
 
 ### Example
 
-`.github/workflows/test.yml`
+`.github/workflows/npm-publish.yml`
+
 ```yaml
-name: 'test'
+name: Node.js package
 on:
   push:
     tags:
       - "v*"
-    branches:
-      - master
 
 jobs:
-  test:
+  test-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
       # Removes the `version` key from a `package-lock.json`
       - uses: mrauhu/deversion@master
       # Now you have same key if the dependencies is haven't changed
@@ -38,10 +52,13 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
-      # Only install if dependencies is changed or cache expired
+      # Install if dependencies is changed or cache expired
       - if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install --no-audit --no-fund
+        run: npm ci
       - run: npm test
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
 
 <!--
