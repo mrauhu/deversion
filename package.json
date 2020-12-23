@@ -5,7 +5,7 @@
   "description": "Makes it possible to use NPM caching when versioning. Github Action that removes `version` from `package-lock.json`. Use it before the `actions/cache` step.",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.release.json",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
