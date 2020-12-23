@@ -1,0 +1,14 @@
+name: 'Checkout cache'
+runs:
+  using: 'composite'
+  steps:
+    # Git checkout
+    - uses: actions/cache@v2
+      id: checkout-cache
+      with:
+        path: |
+          **/*
+          !node_modules
+        key: ${{ runner.os }}-checkout-${{ github.sha }}
+    - if: steps.checkout-cache.outputs.cache-hit != 'true'
+      uses: actions/checkout@v2
