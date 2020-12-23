@@ -2,5 +2,5 @@ name: 'Cache'
 runs:
   using: 'composite'
   steps:
-    - uses: .github/actions/cache/checkout
-    - uses: .github/actions/cache/install
+    - uses: .github/actions/cache/checkout/
+    - uses: .github/actions/cache/install/
