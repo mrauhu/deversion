@@ -5,13 +5,13 @@
 
 # mrauhu/deversion
 
-> Github Action that removes `version` from `package-lock.json`.
+> Github Action that removes the `version` from a `package-lock.json`.
 
-Superpowers the `node_modules` cache step. Lets you skip the installation step even if the version of your Node.js package was bumped via `npm version`.
+Superpowers the `node_modules` cache step. Lets you skip the installation step even if the version of your Node.js package was bumped via `npm version` command.
 
 ## Usage
 
-Add `mrauhu/deversion` before `actions/cache`, setup cache `id` and check cache hit after:
+Add the `mrauhu/deversion` action before `actions/cache`, configure the cache action and check the cache hit after:
 
 ```yaml
 - uses: mrauhu/deversion@master
