@@ -14,7 +14,7 @@ Superpowers the `node_modules` cache step. Lets you skip the installation step e
 Add the `mrauhu/deversion` action before `actions/cache`, configure the cache action and check the cache hit after:
 
 ```yaml
-- uses: mrauhu/deversion@master
+- uses: mrauhu/deversion@v1
 - uses: actions/cache@v2
   id: cache
   with:
@@ -45,7 +45,7 @@ jobs:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
       # Removes the `version` key from a `package-lock.json`
-      - uses: mrauhu/deversion@master
+      - uses: mrauhu/deversion@v1
       # Now you have same key if the dependencies is haven't changed
       - uses: actions/cache@v2
         id: cache
