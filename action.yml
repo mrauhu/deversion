@@ -1,6 +1,11 @@
 name: 'Deversion'
 description: 'Makes it possible to use NPM caching when versioning. Removes `version` from `package-lock.json`. Use it before the `actions/cache` step.'
 author: 'Sergey N <mrauhu@yandex.ru> (https://mrauhu.ru)'
+inputs:
+  filename:
+    required: false
+    description: 'JSON file with `version` key'
+    default: './package-lock.json'
 runs:
   using: 'node12'
   main: 'dist/index.js'
