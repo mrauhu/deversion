@@ -32,6 +32,9 @@ Add the `mrauhu/deversion` action before `actions/cache`, configure the cache ac
 name: Node.js package
 on:
   push:
+    branches:
+      # Your default branch cache is available to other branches and tags
+      - master
     tags:
       - "v*"
 
@@ -56,7 +59,9 @@ jobs:
       - if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - run: npm test
-      - run: npm publish
+      # Publish only `v*` tags
+      - if: startsWith(github.ref, 'refs/tags/v')
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
